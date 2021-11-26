@@ -9,6 +9,7 @@ CREATE TABLE grasp.cards (
   network varchar NOT NULL,
   language varchar NOT NULL,
   received boolean,
+  network_data json,
   CONSTRAINT pkey_grasp_cards PRIMARY KEY (pkey)
 );
 
