@@ -24,6 +24,7 @@ CREATE TABLE grasp.reports (
   card_data json,
   image_url varchar,
   status varchar,
+  partner_code varchar,
   the_geom geometry(Point, 4326),
   CONSTRAINT pkey_grasp_reports PRIMARY KEY (pkey)
 );
