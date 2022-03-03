@@ -33,9 +33,11 @@ ALTER TABLE IF EXISTS cognicity.all_reports
 SELECT AddGeometryColumn ('cognicity','all_reports','the_geom',4326,'POINT',2);
 ALTER TABLE cognicity.all_reports ALTER COLUMN the_geom SET NOT NULL;
 
+-- Partners Table
+-- Create Table to store partners
 CREATE TABLE IF NOT EXISTS cognicity.partners
 (
-    id integer NOT NULL DEFAULT nextval('cognicity.partners_id_seq'::regclass),
+    id SERIAL,
     partner_code character varying(250) COLLATE pg_catalog."default" NOT NULL,
     partner_name character varying(250) COLLATE pg_catalog."default" NOT NULL,
     partner_icon character varying COLLATE pg_catalog."default",
