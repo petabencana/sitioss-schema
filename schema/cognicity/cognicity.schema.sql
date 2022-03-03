@@ -22,9 +22,27 @@ CREATE TABLE cognicity.all_reports
   CONSTRAINT all_reports_pkey PRIMARY KEY (pkey)
 );
 
+ALTER TABLE IF EXISTS cognicity.all_reports
+    ADD CONSTRAINT fkey_partners_partner_code FOREIGN KEY (partner_code)
+    REFERENCES cognicity.partners (partner_code) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
 -- Add Geometry column to all_reports
 SELECT AddGeometryColumn ('cognicity','all_reports','the_geom',4326,'POINT',2);
 ALTER TABLE cognicity.all_reports ALTER COLUMN the_geom SET NOT NULL;
+
+CREATE TABLE IF NOT EXISTS cognicity.partners
+(
+    id integer NOT NULL DEFAULT nextval('cognicity.partners_id_seq'::regclass),
+    partner_code character varying(250) COLLATE pg_catalog."default" NOT NULL,
+    partner_name character varying(250) COLLATE pg_catalog."default" NOT NULL,
+    partner_icon character varying COLLATE pg_catalog."default",
+    partner_status boolean NOT NULL DEFAULT true,
+    CONSTRAINT partners_pkey PRIMARY KEY (id),
+    CONSTRAINT unique_partner_code UNIQUE (partner_code)
+)
 
 -- Add GIST spatial index
 CREATE INDEX gix_all_reports ON cognicity.all_reports USING gist (the_geom);

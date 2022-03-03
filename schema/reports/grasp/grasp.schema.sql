@@ -29,6 +29,14 @@ CREATE TABLE grasp.reports (
   CONSTRAINT pkey_grasp_reports PRIMARY KEY (pkey)
 );
 
+ALTER TABLE IF EXISTS grasp.reports
+    ADD CONSTRAINT fkey_partners_partner_code FOREIGN KEY (partner_code)
+    REFERENCES cognicity.partners (partner_code) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
 --Table grasp_log
 CREATE TABLE grasp.log (
   pkey bigserial NOT NULL,
