@@ -37,7 +37,7 @@ ALTER TABLE cognicity.all_reports ALTER COLUMN the_geom SET NOT NULL;
 -- Create Table to store partners
 CREATE TABLE IF NOT EXISTS cognicity.partners
 (
-    id SERIAL,
+    id serial NOT NULL,
     partner_code character varying(250) COLLATE pg_catalog."default" NOT NULL,
     partner_name character varying(250) COLLATE pg_catalog."default" NOT NULL,
     partner_icon character varying COLLATE pg_catalog."default",
