@@ -76,6 +76,10 @@ if [ $SCHEMA == true ]; then
   echo "Load outreach schema"
   # Load outreach schema
   psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/outreach/outreach.schema.sql
+
+  echo "Load subscriptions schema"
+  # Load outreach schema
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/subscriptions/subscriptions.schema.sql
 fi
 
 # Functions loading
@@ -88,6 +92,7 @@ if [ $FUNCTIONS == true ]; then
   psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/detik/detik.functions.sql
   psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/qlue/qlue.functions.sql
   psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/reports/floodgauge/floodgauge.functions.sql
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/logistics/logistics.functions.sql
 fi
 
 # Static data loading
