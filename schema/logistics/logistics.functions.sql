@@ -40,3 +40,22 @@ $BODY$;
 
 ALTER FUNCTION logistics.update_date_column()
     OWNER TO postgres;
+
+-- Trigger: trg_handle_expired_status
+
+
+CREATE TRIGGER trg_handle_expired_status
+    AFTER UPDATE 
+    ON logistics.need_reports
+    FOR EACH ROW
+    WHEN (old.status IS DISTINCT FROM new.status)
+    EXECUTE FUNCTION logistics.handle_expired_status();
+
+-- Trigger: trg_update_date_column
+
+
+CREATE TRIGGER trg_update_date_column
+    BEFORE UPDATE 
+    ON logistics.need_reports
+    FOR EACH ROW
+    EXECUTE FUNCTION logistics.update_date_column();

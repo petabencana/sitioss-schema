@@ -77,8 +77,12 @@ if [ $SCHEMA == true ]; then
   # Load outreach schema
   psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/outreach/outreach.schema.sql
 
+  echo "Load logistics schema"
+  # Load logistics schema
+  psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/logistics/logistics.schema.sql
+
   echo "Load subscriptions schema"
-  # Load outreach schema
+  # Load subscriptions schema
   psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -f $(pwd)/schema/subscriptions/subscriptions.schema.sql
 fi
 
