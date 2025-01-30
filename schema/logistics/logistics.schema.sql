@@ -1,6 +1,18 @@
 CREATE SCHEMA IF NOT EXISTS logistics
     AUTHORIZATION postgres;
 
+-- Create Enum type if it doesn't exist
+-- CREATE TYPE IF NOT EXISTS logistics.need_status_type AS ENUM ('expired', 'satisfied');
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'logistics.need_status_type') THEN
+        create type logistics.need_status_type AS ENUM ('ACTIVE','EXPIRED','IN EXPIRY' 'SATISFIED');
+    END IF;
+END
+$$;
+
+-- Create Sequence if it doesn't exist
+CREATE SEQUENCE IF NOT EXISTS logistics.need_reports_seq START 1;
 
 -- Table: logistics.need_reports
 
@@ -25,6 +37,14 @@ CREATE TABLE IF NOT EXISTS logistics.need_reports
 )
 
 TABLESPACE pg_default;
+
+-- Add is_training column
+ALTER TABLE IF EXISTS logistics.need_reports
+    ADD COLUMN is_training BOOLEAN DEFAULT FALSE;
+
+-- Add tags column
+ALTER TABLE IF EXISTS logistics.need_reports
+    ADD COLUMN tags jsonb;
 
 ALTER TABLE IF EXISTS logistics.need_reports
     OWNER to postgres;

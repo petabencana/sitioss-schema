@@ -1,3 +1,31 @@
+CREATE OR REPLACE FUNCTION logistics.define_report_region()
+  RETURNS trigger AS
+$BODY$
+	BEGIN
+	UPDATE logistics.need_reports
+    SET tags = (
+        SELECT (code.x->0)::jsonb 
+        FROM (
+            SELECT COALESCE(array_to_json(array_agg(row_to_json(a))), '[{"instance_region_code":null}]') as x 
+            FROM (
+                SELECT code as instance_region_code 
+                FROM cognicity.instance_regions as i 
+                WHERE ST_Within(NEW.the_geom, i.the_geom)
+            ) as a
+        ) as code
+    )
+    WHERE need_request_id = NEW.need_request_id;
+	RETURN NEW;
+	END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+CREATE TRIGGER update_need_reports_with_region
+  AFTER INSERT ON logistics.need_reports
+  FOR EACH ROW
+  EXECUTE PROCEDURE logistics.define_report_region();
+
 CREATE OR REPLACE FUNCTION logistics.handle_expired_status()
     RETURNS trigger
     LANGUAGE 'plpgsql'
