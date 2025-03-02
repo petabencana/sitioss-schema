@@ -1,8 +1,8 @@
-CogniCity
+Situational Intelligence Open Source Software (Siti OSS)
 ===========
-**Open Source GeoSocial Intelligence Framework**
+**Open Source Situational Intelligence Framework**
 
-#### cognicity-schema: PostgreSQL/PostGIS Schema for CogniCity data.
+#### sitioss-schema: PostgreSQL/PostGIS Schema for Siti OSS data.
 [![Build Status](https://travis-ci.org/urbanriskmap/cognicity-schema.svg?branch=master)](https://travis-ci.org/urbanriskmap/cognicity-schema)
 
 DOI for current stable release
@@ -10,7 +10,7 @@ DOI for current stable release
 [![DOI](https://zenodo.org/badge/70249866.svg)](https://zenodo.org/badge/latestdoi/70249866)
 
 ### About
-CogniCity-schema is the PostgreSQL/PostGIS database schema for the CogniCity Framework.  The schema contains the tables required for data input by [cognicity-reports](https://github.com/smart-facility/cognicity-reports-powertrack), [cognicity-reports-detik](https://github.com/urbanriskmap/cognicity-reports-detik), [cognicity-reports-lambda](https://github.com/urbanriskmap/cognicity-reports-lambda), [cognicity-reports-telegram](https://github.com/urbanriskmap/cognicity-reports-telegram) and data output using [cognicity-server](https://github.com/urbanriskmap/cognicity-server).
+Siti OSS-schema is the PostgreSQL/PostGIS database schema for the Siti OSS Framework.  The schema contains the tables required for data input by [sitioss-reports](https://github.com/smart-facility/cognicity-reports-powertrack), [sitioss-reports-detik](https://github.com/urbanriskmap/cognicity-reports-detik), [cognicity-reports-lambda](https://github.com/urbanriskmap/cognicity-reports-lambda), [sitioss-reports-telegram](https://github.com/urbanriskmap/cognicity-reports-telegram) and data output using [sitioss-server](https://github.com/urbanriskmap/cognicity-server).
 
 For a comprehensive overview of CogniCity v1.0, including the original database schema see Chapter 2 of:
 > "White Paper - PetaJakarta.org:
