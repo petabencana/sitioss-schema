@@ -2,36 +2,24 @@ Situational Intelligence Open Source Software (Siti OSS)
 ===========
 **Open Source Situational Intelligence Framework**
 
-#### sitioss-schema: PostgreSQL/PostGIS Schema for Siti OSS data.
-[![Build Status](https://travis-ci.org/urbanriskmap/cognicity-schema.svg?branch=master)](https://travis-ci.org/urbanriskmap/cognicity-schema)
-
-DOI for current stable release
-
-[![DOI](https://zenodo.org/badge/70249866.svg)](https://zenodo.org/badge/latestdoi/70249866)
-
 ### About
-Siti OSS-schema is the PostgreSQL/PostGIS database schema for the Siti OSS Framework.  The schema contains the tables required for data input by [sitioss-reports](https://github.com/smart-facility/cognicity-reports-powertrack), [sitioss-reports-detik](https://github.com/urbanriskmap/cognicity-reports-detik), [cognicity-reports-lambda](https://github.com/urbanriskmap/cognicity-reports-lambda), [sitioss-reports-telegram](https://github.com/urbanriskmap/cognicity-reports-telegram) and data output using [sitioss-server](https://github.com/urbanriskmap/cognicity-server).
-
-For a comprehensive overview of CogniCity v1.0, including the original database schema see Chapter 2 of:
-> "White Paper - PetaJakarta.org:
-Assessing the Role of Social Media for Civic Co‑Management During Monsoon Flooding
-in Jakarta, Indonesia", 2014. Holderness T & Turpin E. [ISBN 978-1-74128-249-8 ](http://petajakarta.org/banjir/en/research/)
+Siti OSS-schema is the PostgreSQL/PostGIS database schema for the Siti OSS Framework.  The schema contains the tables required for data input by [sitioss-reports](https://github.com/petabencana/sitioss-reports), [sitioss-reports-lambda](https://github.com/petabencana/sitioss-reports-lambda), [sitioss-reports-telegram](https://github.com/petabencana/sitioss-reports-telegram) and data output using [sitioss-server](https://github.com/petabencana/sitioss-server).
 
 #### Reports
-Input data sources for reporting are received into separate schemas, named by report types. Trigger functions in each data source's schema normalise the different report data and push it to the global cognicity.all_reports table (see Table below).
+Input data sources for reporting are received into separate schemas, named by report types. Trigger functions in each data source's schema normalise the different report data and push it to the global sitioss.all_reports table (see Table below).
 
 #### Risk Evaluation Matrix (REM)
-Flood affected area polygon data provided by emergency services via the REM interface is stored in the cognicity.rem_status table. The geographic data for these areas is stored in the cognicity.local_areas table.
+Flood affected area polygon data provided by emergency services via the REM interface is stored in the sitioss.rem_status table. The geographic data for these areas is stored in the sitioss.local_areas table.
 
 ### Tables
-#### CogniCity Schema v3.0
+#### Siti OSS Schema 
 | Schema | Table Name | Description |
 | ------ | ---------- | ----------- |
-| cognicity | all_reports | Confirmed reports of flooding from all data sources |
-| cognicity | instance_regions | Regions where CogniCity is currently deployed |
-| cognicity | local_areas | Neighbourhood scale unit areas (In Indonesia, these are RWs. In Chennai, these are zones) |
-| cognicity| rem_status | Flood state of local_areas as defined by the Risk Evaluation Matrix |
-| cognicity| rem_status_log | Log changes to rem_status |
+| sitioss | all_reports | Confirmed reports of flooding from all data sources |
+| sitioss | instance_regions | Regions where CogniCity is currently deployed |
+| sitioss | local_areas | Neighbourhood scale unit areas (In Indonesia, these are RWs.) |
+| sitioss| rem_status | Flood state of local_areas as defined by the Risk Evaluation Matrix |
+| sitioss| rem_status_log | Log changes to rem_status |
 | detik | reports | Reports from Pasangmata citizen journalism app (provided by Detik.com) |
 | detik | reports | Users with reports received from Pasangmata citizen journalism app (provided by Detik.com) |
 | floodgauge | reports | Live reports of water depths from flood gauges in city |
@@ -56,13 +44,6 @@ Flood affected area polygon data provided by emergency services via the REM inte
 <dl>Hydrological Infrastructure Data (pumps, floodgates, waterways) is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>. <img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png"/></a>
 </dl>
 * Hydrological data are available from [Research Data Australia](https://researchdata.ands.org.au/petajakartaorg/552178) (Australian National Data Service), with DOIs held by the National Library of Australia.
-
-**India**
-<dl>Chennai's municipal boundaries courtesy of Chennai Municipal Corportation</dl>
-<dl>Chennai hydrological data (waterways) courtesy of Chennai Flood Management (http://chennaifloodmanagement.org/en/layers/geonode:watercourses#category-more)</dl>
-
-**Broward County, Florida, US**
-<dl>Broward County section grids courtesy of Broward County (http://gis.broward.org/GISData.htm)</dl>
 
 ### Dependencies
 * [PostgreSQL](http://www.postgresql.org) version 9.6 or later, with
@@ -113,7 +94,7 @@ $ npm test
 
 
 #### Adding New City
-Instructions to add a new city in cognicity-schema
+Instructions to add a new city in sitioss-schema
 * Install the database and load data for specified country run:
 ```sh
 $ export COUNTRY=id
@@ -133,17 +114,17 @@ $ shp2pgsql -I -d -s 4326 <FILENAME.SHP> <SCHEMA>.<TABLE> | psql -U postgres -d 
 
 
 ### Contribution Guidelines
-* Issues are tracked on [GitHub](https://github.com/urbanriskmap/cognicity-schema/issues)
+* Issues are tracked on Github
 
 ### Release
 The release procedure is as follows:
 - Update the CHANGELOG.md file with the newly released version and high-level overview of changes.
 - Check that package.json contains the correct release version number.
 - Check that package-lock.json contains the correct release version number.
-- Check that schema/cognicity/cognicity.schema.functions.sql `cognicity.version()` function returns the correct release version number.
+- Check that schema/sitioss/sitioss.schema.functions.sql `cognicity.version()` function returns the correct release version number.
 - Commit any changes and tag in git from the current head of master. The tag should be the same as the version specified in the package.json file and elsewhere - this is the release version.
 - Pull changes into dev branch.
-- Increment the version number in package.json, package-lock.json, and `cognicity.version()`.
+- Increment the version number in package.json, package-lock.json, and `sitioss.version()`.
 - Commit these changes with the message 'Opened new version for development'.
 - Further development is now on the updated version number until the release process begins  again.
 
