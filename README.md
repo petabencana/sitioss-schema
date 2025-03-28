@@ -130,3 +130,11 @@ The release procedure is as follows:
 
 ### License
 The schema is released under the GPLv3 License. See LICENSE.txt for details.
+
+### Changes since Fork
+
+The repository has been kept in sync with server changes for Indonesia, Phillipines and Panama deployments to support following features
+- Support reports for multiple geographies
+- Add partner and training reports
+- Support Crows=dlogistics
+- Support report subscriptiosn
