@@ -46,6 +46,13 @@ BEGIN
 END;
 $BODY$;
 
+-- Create Trigger
+CREATE TRIGGER handle_expired_status
+AFTER UPDATE ON logistics.need_reports
+FOR EACH ROW
+WHEN (NEW.status = 'EXPIRED' OR NEW.status = 'SATISFIED')
+EXECUTE FUNCTION logistics.handle_expired_status();
+
 ALTER FUNCTION logistics.handle_expired_status()
     OWNER TO postgres;
 

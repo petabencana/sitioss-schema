@@ -46,6 +46,26 @@ ALTER TABLE IF EXISTS logistics.need_reports
 ALTER TABLE IF EXISTS logistics.need_reports
     ADD COLUMN tags jsonb;
 
+-- Add address column
+ALTER TABLE IF EXISTS logistics.need_reports  
+    ADD COLUMN address JSONB;
+
+-- Add updated_count column
+ALTER TABLE IF EXISTS logistics.need_reports
+    ADD COLUMN updated_count integer DEFAULT 0;
+
+-- Add is updated column
+ALTER TABLE IF EXISTS logistics.need_reports
+    ADD COLUMN is_updated boolean DEFAULT FALSE;
+
+-- Add title column
+ALTER TABLE IF EXISTS logistics.need_reports
+    ADD COLUMN title character varying COLLATE pg_catalog."default" NOT NULL;
+
+-- Add an other need status type
+ALTER TYPE logistics.need_status_type ADD VALUE 'PARTIALLY SATISFIED';
+
+
 ALTER TABLE IF EXISTS logistics.need_reports
     OWNER to postgres;
 -- Index: fki_need_reports_fkey
@@ -148,3 +168,18 @@ CREATE INDEX IF NOT EXISTS fki_need_id_fkey
     (need_id ASC NULLS LAST)
     TABLESPACE pg_default;
 
+CREATE TYPE logistics.chat_status AS ENUM ('ACTIVE', 'ENDED');
+
+-- Create the table in logistics schema
+CREATE TABLE logistics.chat_sessions (
+  session_id SERIAL PRIMARY KEY,
+  need_id INT NOT NULL,
+  giver_number VARCHAR(15) NOT NULL,
+  need_number VARCHAR(20) NOT NULL,
+  status logistics.chat_status NOT NULL DEFAULT 'ACTIVE',
+  started_at TIMESTAMP DEFAULT NOW(),
+  last_activity_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Add the other status for logistics chat staus
+ALTER TYPE logistics.chat_status ADD VALUE 'STORED';
