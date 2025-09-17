@@ -1,6 +1,18 @@
 CREATE SCHEMA IF NOT EXISTS logistics
     AUTHORIZATION postgres;
 
+-- Create Enum type if it doesn't exist
+-- CREATE TYPE IF NOT EXISTS logistics.need_status_type AS ENUM ('expired', 'satisfied');
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'logistics.need_status_type') THEN
+        create type logistics.need_status_type AS ENUM ('ACTIVE','EXPIRED','IN EXPIRY' 'SATISFIED');
+    END IF;
+END
+$$;
+
+-- Create Sequence if it doesn't exist
+CREATE SEQUENCE IF NOT EXISTS logistics.need_reports_seq START 1;
 
 -- Table: logistics.need_reports
 
@@ -25,6 +37,34 @@ CREATE TABLE IF NOT EXISTS logistics.need_reports
 )
 
 TABLESPACE pg_default;
+
+-- Add is_training column
+ALTER TABLE IF EXISTS logistics.need_reports
+    ADD COLUMN is_training BOOLEAN DEFAULT FALSE;
+
+-- Add tags column
+ALTER TABLE IF EXISTS logistics.need_reports
+    ADD COLUMN tags jsonb;
+
+-- Add address column
+ALTER TABLE IF EXISTS logistics.need_reports  
+    ADD COLUMN address JSONB;
+
+-- Add updated_count column
+ALTER TABLE IF EXISTS logistics.need_reports
+    ADD COLUMN updated_count integer DEFAULT 0;
+
+-- Add is updated column
+ALTER TABLE IF EXISTS logistics.need_reports
+    ADD COLUMN is_updated boolean DEFAULT FALSE;
+
+-- Add title column
+ALTER TABLE IF EXISTS logistics.need_reports
+    ADD COLUMN title character varying COLLATE pg_catalog."default" NOT NULL;
+
+-- Add an other need status type
+ALTER TYPE logistics.need_status_type ADD VALUE 'PARTIALLY SATISFIED';
+
 
 ALTER TABLE IF EXISTS logistics.need_reports
     OWNER to postgres;
@@ -128,3 +168,18 @@ CREATE INDEX IF NOT EXISTS fki_need_id_fkey
     (need_id ASC NULLS LAST)
     TABLESPACE pg_default;
 
+CREATE TYPE logistics.chat_status AS ENUM ('ACTIVE', 'ENDED');
+
+-- Create the table in logistics schema
+CREATE TABLE logistics.chat_sessions (
+  session_id SERIAL PRIMARY KEY,
+  need_id INT NOT NULL,
+  giver_number VARCHAR(15) NOT NULL,
+  need_number VARCHAR(20) NOT NULL,
+  status logistics.chat_status NOT NULL DEFAULT 'ACTIVE',
+  started_at TIMESTAMP DEFAULT NOW(),
+  last_activity_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Add the other status for logistics chat staus
+ALTER TYPE logistics.chat_status ADD VALUE 'STORED';
